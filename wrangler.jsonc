@@ -1,0 +1,30 @@
+{
+  "compatibility_date": "2025-12-07",
+  "name": "failure-example",
+  "main": "src/index.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+  },
+  "containers": [
+    {
+      "class_name": "Backend",
+      "image": "./Dockerfile",
+      "max_instances": 3,
+    },
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "class_name": "Backend",
+        "name": "BACKEND",
+      },
+    ],
+  },
+  "migrations": [
+    {
+      "new_sqlite_classes": ["Backend"],
+      "tag": "v1",
+    },
+  ],
+}
