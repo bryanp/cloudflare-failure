@@ -1,10 +1,12 @@
 import { Container, getRandom } from "@cloudflare/containers";
 
+const DEFAULT_PORT = 8080;
+
 // Set to 1 so it's easier to reproduce the issue.
 const INSTANCE_COUNT = 1;
 
 export class Backend extends Container {
-  defaultPort = 8080;
+  defaultPort = DEFAULT_PORT;
   sleepAfter = "10s";
 }
 
@@ -14,6 +16,8 @@ export default {
     if (url.pathname.startsWith("/api")) {
       try {
         const containerInstance = await getRandom(env.BACKEND, INSTANCE_COUNT);
+        await containerInstance.startAndWaitForPorts(DEFAULT_PORT);
+
         console.log("got instance with state", await containerInstance.getState());
         const result = await containerInstance.fetch(request);
 
